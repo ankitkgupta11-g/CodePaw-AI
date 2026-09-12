@@ -1,0 +1,6 @@
+{
+  "name": "CodePaw AI",
+  "description": "Learn to Code. Raise Your Companion. Level Up. Gamified coding platform with interactive lessons, virtual pet companion, and multi-language coding playground.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
