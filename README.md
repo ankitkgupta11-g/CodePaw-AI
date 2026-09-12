@@ -2,101 +2,220 @@
 
 > **Learn to Code. Raise Your Companion. Level Up.**
 
-CodePaw AI is an interactive, gamified coding-learning platform inspired by Duolingo-style bite-sized curriculum progression, virtual companion nurturing, and interactive modern developer playgrounds.
+[![React](https://img.shields.io/badge/React-18%2B-61DAFB?logo=react\&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5%2B-3178C6?logo=typescript\&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5%2B-646CFF?logo=vite\&logoColor=white)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4%2B-06B6D4?logo=tailwindcss\&logoColor=white)](https://tailwindcss.com/)
+[![Gemini AI](https://img.shields.io/badge/Gemini_AI-Powered-4285F4?logo=google\&logoColor=white)](https://ai.google.dev/)
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel\&logoColor=white)](https://vercel.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-As you master programming concepts across Python, HTML5, CSS, and JavaScript, your virtual companion earns experience, unlocks cyber accessories, and levels up alongside your coding journey.
+**CodePaw AI** is a gamified AI-powered coding learning platform designed to make programming more interactive, engaging, and rewarding.
+
+Learn **Python, HTML5, CSS, and JavaScript** through bite-sized lessons, practice in an interactive code sandbox, interact with your AI coding companion, and grow your virtual companion as you progress through your learning journey.
+
+---
+
+## 📚 Table of Contents
+
+* [✨ Features](#-features)
+
+  * [🐾 Virtual Cyber Companion](#-virtual-cyber-companion)
+  * [📚 Interactive Coding Curriculum](#-interactive-coding-curriculum)
+  * [💻 Developer Learning Environment](#-developer-learning-environment)
+  * [🎮 Gamification](#-gamification)
+  * [🤖 AI-Powered Learning](#-ai-powered-learning)
+  * [🔊 Accessibility & Interactive Experience](#-accessibility--interactive-experience)
+  * [💾 Reliable Local Progress](#-reliable-local-progress)
+* [🛠️ Tech Stack](#️-tech-stack)
+* [🚀 Getting Started](#-getting-started)
+* [☁️ Deployment](#️-deployment)
+* [🎯 Project Vision](#-project-vision)
+* [📄 License](#-license)
 
 ---
 
 ## ✨ Features
 
-- **Virtual Cyber Companion Sanctuary**:
-  - 8 Dynamic Companions: `Rexi`, `Byte`, `Nova`, `Pip`, `Kitsune`, `Chrono`, `Nimbus`, `Spark`
-  - Dynamic Moods: `Ecstatic`, `Happy`, `Neutral`, `Sleepy`
-  - Visual Accessories: Hologram Shades, VR Visor, Cyber Cap, Wizard Hat, Golden Crown, DJ Headset, Data Monocle, and Pixel Glasses
-  - Companion Customizer with live SVG preview, color palettes, and renaming
-  - Feeding mechanics with real-time hunger gauges and mood evolution
+### 🐾 Virtual Cyber Companion
 
-- **Interactive Coding Curriculum**:
-  - **Python Mastery**: Royal Greetings (`print`), Storing Digital Memories (Variables), Dynamic F-Strings, Conditionals, and Training Loops
-  - **HTML5 Architect**: Primary Headings (`<h1>`), Interactive Action Buttons (`<button>`), and Semantic Profile Containers
-  - **CSS Stylist**: Vibrant Colors, Rounded Futuristic Cards (`border-radius`), and Fluid Flexbox Alignment
-  - **JavaScript Dynamo**: Modern `const`/`let` Declarations, Arrow Functions, and Array Transformations (`.map()`)
+* 8 unique companions: `Rexi`, `Byte`, `Nova`, `Pip`, `Kitsune`, `Chrono`, `Nimbus`, `Spark`
+* Dynamic moods: `Ecstatic`, `Happy`, `Neutral`, `Sleepy`
+* Multiple cyber accessories:
 
-- **Developer Learning Environment**:
-  - Dedicated multi-tab Code Sandbox (JavaScript, Python Simulation, HTML, CSS)
-  - Isolated sandboxed execution for JavaScript
-  - Dedicated Python Beginner Simulation with clear, transparent labeling
-  - Live sandboxed visual HTML & CSS renderer
-  - Intelligent answer validation with whitespace & quote normalization
+  * Hologram Shades
+  * VR Visor
+  * Cyber Cap
+  * Wizard Hat
+  * Golden Crown
+  * DJ Headset
+  * Data Monocle
+  * Pixel Glasses
+* Companion customization with live SVG preview
+* Custom color palettes and companion renaming
+* Feeding system with hunger and mood mechanics
 
-- **Gamification & Habit Mechanics**:
-  - **XP & Level Progression**: Level up celebrations with particle confetti and fanfare
-  - **Gems Economy**: Earned through lesson completion and daily visits; spent on snacks and gear in the Pet Bazaar
-  - **Heart Recovery System**: Clamped between 0 and 5 hearts
-  - **Daily Streaks**: Animated flame counter with motivational reminders
-  - **Daily Bonus**: Calendar-day locked claim (+25 Gems once per day)
-  - **Official Completion Certificates**: Verifiable digital credentials with print & PDF export
-  - **Badges & Achievements**: Feats for streaks, lessons, XP milestones, and styling
-  - **Global & Local Leaderboard**: Clear competitive rankings with gem indicators
+### 📚 Interactive Coding Curriculum
 
-- **Accessibility & Sensory Immersion**:
-  - Web Audio API synthesizer for chimes, feedback, and level-ups
-  - Web Speech API integration for lesson text-to-speech voice narration
-  - Keyboard Command Palette (`Ctrl + K` / `Cmd + K`) for instant navigation
+Structured, bite-sized learning paths for:
 
-- **Storage & State Resilience**:
-  - Versioned local storage keys (`codepaw_profile_data_v1`, `codepaw_sandbox_code_v1`)
-  - Automatic migration from legacy `skillpet_` keys to `codepaw_` keys preserving all existing user progress
-  - Corruption recovery with safe parsing and fallback defaults
-  - Clean "Reset Progress" flow with explicit confirmation
+* **Python Mastery**
+
+  * `print()`
+  * Variables
+  * F-Strings
+  * Conditionals
+  * Loops
+
+* **HTML5 Architect**
+
+  * Headings
+  * Buttons
+  * Semantic HTML
+
+* **CSS Stylist**
+
+  * Colors
+  * Border Radius
+  * Flexbox
+
+* **JavaScript Dynamo**
+
+  * `const` / `let`
+  * Arrow Functions
+  * `.map()`
+  * Array Transformations
+
+### 💻 Developer Learning Environment
+
+* Multi-language Code Sandbox
+* JavaScript execution in an isolated sandbox
+* Beginner-friendly Python simulation
+* Live HTML preview
+* Live CSS rendering
+* Intelligent answer validation
+* Code copying, resetting, and practice workflows
+
+### 🎮 Gamification
+
+* XP and level progression
+* Level-up celebrations with confetti and sound effects
+* Gems-based reward system
+* Heart recovery system
+* Daily learning streaks
+* Daily bonus rewards
+* Pet Bazaar for accessories and rewards
+* Badges and achievements
+* Global and local leaderboard
+* Completion certificates with print/PDF support
+
+### 🤖 AI-Powered Learning
+
+* Personal AI coding companion
+* Programming concept explanations
+* Beginner-friendly coding guidance
+* Learning-focused mentorship powered by Gemini
+* Context-aware assistance throughout the learning experience
+
+### 🔊 Accessibility & Interactive Experience
+
+* Web Audio API sound effects
+* Web Speech API lesson narration
+* Keyboard Command Palette
+* Responsive interface for desktop and mobile
+
+### 💾 Reliable Local Progress
+
+* Versioned localStorage persistence
+* Automatic migration from legacy `skillpet_` storage keys
+* Existing progress preservation during migration
+* Corruption-safe data recovery
+* Reset Progress flow with confirmation
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React 18+ (Vite)
-- **Backend**: Express + Vite Middleware with Gemini AI Companion Mentorship
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Celebration Effects**: canvas-confetti
-- **Browser APIs**: Web Audio API, Web Speech API, Web Storage API
+| Technology           | Purpose                        |
+| -------------------- | ------------------------------ |
+| **React 18+**        | Frontend UI                    |
+| **Vite**             | Development & production build |
+| **TypeScript**       | Type-safe development          |
+| **Tailwind CSS**     | Styling & responsive design    |
+| **Express**          | Backend & API integration      |
+| **Google Gemini AI** | AI Coding Companion            |
+| **Lucide React**     | Icons                          |
+| **canvas-confetti**  | Celebration effects            |
+| **Web Audio API**    | Sound effects                  |
+| **Web Speech API**   | Voice narration                |
+| **Web Storage API**  | Local progress persistence     |
 
 ---
 
-## 🚀 Local Development
+## 🚀 Getting Started
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Prerequisites
 
-2. Start the development server:
-   ```bash
-   npm run dev
-   ```
+Make sure you have **Node.js** installed on your system.
 
-3. Build for production:
-   ```bash
-   npm run build
-   ```
+### Installation
 
-4. Preview the production build:
-   ```bash
-   npm run preview
-   ```
+```bash
+git clone https://github.com/ankitkgupta11-g/CodePaw-AI.git
+cd CodePaw-AI
+npm install
+```
+
+### Run Development Server
+
+```bash
+npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
 
 ---
 
 ## ☁️ Deployment
 
-CodePaw AI is configured with full-stack build scripts:
-- Build command: `npm run build`
-- Output directory: `dist`
+CodePaw AI is designed for modern full-stack deployment and can be deployed using platforms such as **Vercel**.
+
+### Production Build
+
+```bash
+npm run build
+```
+
+### Build Output
+
+```text
+dist/
+```
+
+---
+
+## 🎯 Project Vision
+
+CodePaw AI combines **AI mentorship, interactive coding practice, gamification, and virtual companion mechanics** into a single learning experience.
+
+Instead of simply completing programming lessons, users build skills, maintain streaks, earn rewards, customize their companion, and progress through their coding journey.
+
+> **Learn. Practice. Earn. Evolve. Code.** 🐾
 
 ---
 
 ## 📄 License
 
-MIT License — free to use, modify, and build upon.
+This project is licensed under the **MIT License**.
+
+Free to use, modify, and build upon.
