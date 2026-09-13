@@ -75,9 +75,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm shadow-emerald-500/30">
-              <Zap className="w-5 h-5 fill-current" />
-            </div>
+            <img
+              src="/favicon.png"
+              alt="CodePaw AI"
+              className="w-9 h-9 rounded-xl shadow-xs object-cover"
+              referrerPolicy="no-referrer"
+            />
             <span className="font-extrabold text-xl tracking-tight text-slate-900">
               CodePaw <span className="text-emerald-600">AI</span>
             </span>
@@ -677,9 +680,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <footer className="bg-white border-t border-emerald-100/80 py-10 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white">
-              <Zap className="w-4 h-4 fill-current" />
-            </div>
+            <img
+              src="/favicon.png"
+              alt="CodePaw AI"
+              className="w-8 h-8 rounded-xl shadow-xs object-cover"
+              referrerPolicy="no-referrer"
+            />
             <span className="font-extrabold text-lg text-slate-900">
               CodePaw <span className="text-emerald-600">AI</span>
             </span>

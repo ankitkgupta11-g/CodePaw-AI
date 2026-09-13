@@ -185,9 +185,12 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
               className="flex items-center gap-2.5 text-left cursor-pointer min-w-0 group"
               title="CodePaw AI Dashboard"
             >
-              <div className="w-10 h-10 rounded-2xl bg-[#22c55e] flex items-center justify-center text-white shadow-xs shrink-0 group-hover:scale-105 transition-transform">
-                <Sparkles className="w-5 h-5 fill-current" />
-              </div>
+              <img
+                src="/favicon.png"
+                alt="CodePaw AI"
+                className="w-10 h-10 rounded-2xl shadow-xs object-cover shrink-0 group-hover:scale-105 transition-transform"
+                referrerPolicy="no-referrer"
+              />
               <div className="min-w-0 overflow-hidden">
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-base tracking-tight text-slate-900 truncate">
@@ -236,10 +239,15 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             <button
               type="button"
               onClick={() => handleNavigate('dashboard')}
-              className="w-10 h-10 rounded-2xl bg-[#22c55e] flex items-center justify-center text-white shadow-xs shrink-0 group relative cursor-pointer hover:scale-105 transition-transform"
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-xs shrink-0 group relative cursor-pointer hover:scale-105 transition-transform"
               aria-label="CodePaw AI Dashboard"
             >
-              <Sparkles className="w-5 h-5 fill-current" />
+              <img
+                src="/favicon.png"
+                alt="CodePaw AI"
+                className="w-10 h-10 rounded-2xl object-cover"
+                referrerPolicy="no-referrer"
+              />
               <Tooltip text="CodePaw AI" />
             </button>
 

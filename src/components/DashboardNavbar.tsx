@@ -38,9 +38,12 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             className="flex items-center gap-2.5 cursor-pointer"
             onClick={() => onNavigate('home')}
           >
-            <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-sm shadow-emerald-600/20">
-              <Zap className="w-4 h-4 fill-current" />
-            </div>
+            <img
+              src="/favicon.png"
+              alt="CodePaw AI"
+              className="w-8 h-8 rounded-xl shadow-xs object-cover"
+              referrerPolicy="no-referrer"
+            />
             <div className="font-extrabold text-base tracking-tight text-slate-900">
               CodePaw <span className="text-emerald-600">AI</span>
             </div>
