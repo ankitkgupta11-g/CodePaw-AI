@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#141936" />
+      <stop offset="60%" stop-color="#090c19" />
+      <stop offset="100%" stop-color="#050711" />
+    </radialGradient>
+
+    <!-- Neon Paw Cyan-Blue to Purple Gradient -->
+    <linearGradient id="pawGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="35%" stop-color="#0284c7" />
+      <stop offset="70%" stop-color="#6366f1" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+
+    <!-- Toe Highlight -->
+    <linearGradient id="toeHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#7dd3fc" />
+      <stop offset="50%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+
+    <!-- Orbital Ring Gradient -->
+    <linearGradient id="ringGrad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#38bdf8" stop-opacity="1" />
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark Rounded Squircle Base (No white corners) -->
+  <rect x="16" y="16" width="480" height="480" rx="108" ry="108" fill="url(#bgGlow)" />
+  
+  <!-- Subtle Inner Border for High Contrast on Dark Tabs -->
+  <rect x="16" y="16" width="480" height="480" rx="108" ry="108" fill="none" stroke="#38bdf8" stroke-opacity="0.25" stroke-width="3" />
+
+  <!-- Orbital Ring Behind / Around Paw -->
+  <path
+    d="M 92 340 C 80 395, 170 435, 270 415 C 375 395, 450 340, 440 280 C 435 245, 395 235, 360 250"
+    fill="none"
+    stroke="url(#ringGrad)"
+    stroke-width="16"
+    stroke-linecap="round"
+    filter="url(#neonGlow)"
+  />
+
+  <!-- Outer Sparkles -->
+  <g fill="#67e8f9" filter="url(#neonGlow)">
+    <!-- Top Right Sparkle -->
+    <path d="M 390 120 Q 390 145 405 145 Q 390 145 390 170 Q 390 145 375 145 Q 390 145 390 120 Z" fill="#a5f3fc" />
+    <!-- Left Sparkle -->
+    <path d="M 95 265 Q 95 285 110 285 Q 95 285 95 305 Q 95 285 80 285 Q 95 285 95 265 Z" fill="#38bdf8" />
+  </g>
+
+  <!-- Paw Group with Glow -->
+  <g filter="url(#neonGlow)">
+    <!-- Toe 1 (Far Left) -->
+    <ellipse cx="145" cy="225" rx="36" ry="52" fill="url(#toeHighlight)" transform="rotate(-20 145 225)" />
+    <!-- Toe 2 (Center Left) -->
+    <ellipse cx="205" cy="165" rx="38" ry="58" fill="url(#toeHighlight)" transform="rotate(-6 205 165)" />
+    <!-- Toe 3 (Center Right) -->
+    <ellipse cx="305" cy="165" rx="38" ry="58" fill="url(#toeHighlight)" transform="rotate(6 305 165)" />
+    <!-- Toe 4 (Far Right) -->
+    <ellipse cx="365" cy="225" rx="36" ry="52" fill="url(#toeHighlight)" transform="rotate(20 365 225)" />
+
+    <!-- Main Pad -->
+    <path
+      d="M 256 220
+         C 320 220, 385 270, 375 335
+         C 365 390, 310 395, 256 395
+         C 202 395, 147 390, 137 335
+         C 127 270, 192 220, 256 220 Z"
+      fill="url(#pawGrad)"
+    />
+  </g>
+
+  <!-- Center Bold Code Bracket: < / > in Crisp White -->
+  <g stroke="#ffffff" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Left Chevron < -->
+    <path d="M 230 285 L 202 308 L 230 331" />
+    <!-- Slash / -->
+    <path d="M 266 280 L 246 336" />
+    <!-- Right Chevron > -->
+    <path d="M 282 285 L 310 308 L 282 331" />
+  </g>
+</svg>
