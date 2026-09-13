@@ -27,6 +27,7 @@ Learn **Python, HTML5, CSS, and JavaScript** through bite-sized lessons, practic
   * [🤖 AI-Powered Learning](#-ai-powered-learning)
   * [🔊 Accessibility & Interactive Experience](#-accessibility--interactive-experience)
   * [💾 Reliable Local Progress](#-reliable-local-progress)
+  * [👤 Account & Data Management](#-account--data-management)
 * [🛠️ Tech Stack](#️-tech-stack)
 * [📁 Project Structure](#-project-structure)
 * [🚀 Getting Started](#-getting-started)
@@ -161,6 +162,14 @@ Structured, bite-sized learning paths for multiple technologies.
 * Corruption-safe data recovery
 * Safe fallback defaults
 * Reset Progress flow with confirmation
+
+### 👤 Account & Data Management
+
+* Account data storage options
+* Secure management of user account data
+* User-controlled data management
+* Account deletion option
+* Account data removal through the account deletion flow
 
 ---
 
@@ -382,6 +391,7 @@ Instead of simply completing programming lessons, users can:
 * Unlock companion accessories
 * Customize their virtual companion
 * Track their learning progress
+* Manage their account and stored data
 
 The goal is to make coding education feel less like traditional study and more like an interactive journey.
 
