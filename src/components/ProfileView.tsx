@@ -9,6 +9,10 @@ import {
   LogOut,
   Bell,
   Award,
+  Database,
+  UserX,
+  Trash2,
+  HardDrive,
 } from 'lucide-react';
 import { UserProfile, PetId } from '../types';
 import { COMPANIONS, COMPANIONS_BY_ID } from '../data/companions';
@@ -19,12 +23,16 @@ interface ProfileViewProps {
   user: UserProfile;
   onUpdateProfile: (updated: Partial<UserProfile>) => void;
   onSignOut: () => void;
+  onNavigateToDataStorage?: () => void;
+  onDeleteAccount?: () => void;
 }
 
 export const ProfileView: React.FC<ProfileViewProps> = ({
   user,
   onUpdateProfile,
   onSignOut,
+  onNavigateToDataStorage,
+  onDeleteAccount,
 }) => {
   const [name, setName] = useState<string>(user.name);
   const [emailReminders, setEmailReminders] = useState<boolean>(
@@ -294,25 +302,79 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         </div>
       </div>
 
-      {/* Account Actions / Sign Out */}
+      {/* Data Storage & Privacy Inspector Link */}
       <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="space-y-1 text-center sm:text-left">
-          <div className="font-bold text-sm text-slate-900">
-            Sign out of CodePaw
+        <div className="flex items-center gap-4 text-center sm:text-left">
+          <div className="w-12 h-12 rounded-2xl bg-sky-50 border border-sky-200/70 text-sky-600 flex items-center justify-center shrink-0">
+            <Database className="w-6 h-6" />
           </div>
-          <div className="text-xs text-slate-500">
-            Use this when you leave this app on this device.
+          <div>
+            <div className="font-bold text-sm text-slate-900">
+              Data Storage & Activity Transparency
+            </div>
+            <div className="text-xs text-slate-500 mt-0.5">
+              Inspect exactly what is stored in your browser, view raw storage keys, and export your entire profile data as a JSON file.
+            </div>
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onSignOut}
-          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition cursor-pointer"
-        >
-          <LogOut className="w-4 h-4" />
-          <span>Sign Out</span>
-        </button>
+        {onNavigateToDataStorage && (
+          <button
+            type="button"
+            onClick={onNavigateToDataStorage}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-sky-700 bg-sky-50 hover:bg-sky-100 border border-sky-200 transition cursor-pointer shrink-0 self-start sm:self-auto"
+          >
+            <Database className="w-4 h-4" />
+            <span>Inspect Stored Data</span>
+          </button>
+        )}
+      </div>
+
+      {/* Account Actions / Sign Out & Danger Zone */}
+      <div className="space-y-4">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-1 text-center sm:text-left">
+            <div className="font-bold text-sm text-slate-900">
+              Sign out of CodePaw
+            </div>
+            <div className="text-xs text-slate-500">
+              Signs you out of this session on this device.
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition cursor-pointer"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Sign Out</span>
+          </button>
+        </div>
+
+        {/* Permanent Account Deletion Option */}
+        <div className="bg-rose-50/60 rounded-3xl p-6 sm:p-8 border border-rose-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="space-y-1 text-center sm:text-left">
+            <div className="font-extrabold text-sm text-rose-900 flex items-center justify-center sm:justify-start gap-2">
+              <UserX className="w-4 h-4 text-rose-600" />
+              <span>Delete Account & Wipe All Data</span>
+            </div>
+            <div className="text-xs text-rose-700">
+              Permanently erase your account, all completed lessons, XP, companion progress, and sandbox code from this browser.
+            </div>
+          </div>
+
+          {onDeleteAccount && (
+            <button
+              type="button"
+              onClick={onDeleteAccount}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs text-white bg-rose-600 hover:bg-rose-700 shadow-sm shadow-rose-600/20 active:scale-95 transition cursor-pointer shrink-0"
+            >
+              <Trash2 className="w-4 h-4" />
+              <span>Delete Account</span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

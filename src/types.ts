@@ -152,6 +152,7 @@ export type MainAppView =
   | 'leaderboard'
   | 'billing'
   | 'profile'
+  | 'data-storage'
   | 'course-detail'
   | 'chapter-quest'
   | 'ai-generator';

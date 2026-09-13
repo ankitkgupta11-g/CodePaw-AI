@@ -19,6 +19,8 @@ import {
   Wand2,
   RotateCcw,
   X,
+  Database,
+  UserX,
 } from 'lucide-react';
 import { MainAppView, UserProfile, PetState } from '../types';
 import { PetAvatar } from './PetAvatar';
@@ -31,6 +33,7 @@ interface DashboardSidebarProps {
   onSignOut: () => void;
   onToggleSound: () => void;
   onResetProgress?: () => void;
+  onDeleteAccount?: () => void;
   user: UserProfile;
   pet: PetState;
   isCollapsed?: boolean;
@@ -46,6 +49,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
   onSignOut,
   onToggleSound,
   onResetProgress,
+  onDeleteAccount,
   user,
   pet,
   isCollapsed = false,
@@ -85,12 +89,22 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     }
   };
 
+  const handleDeleteAccountClick = () => {
+    if (onDeleteAccount) {
+      onDeleteAccount();
+    }
+    if (isMobileDrawer && onCloseMobileDrawer) {
+      onCloseMobileDrawer();
+    }
+  };
+
   const NAV_ITEMS: {
-    id: MainAppView | 'reset-progress';
+    id: MainAppView | 'reset-progress' | 'delete-account';
     label: string;
     icon: React.FC<{ className?: string }>;
     badge?: { text: string; bg: string; color: string };
     isAction?: boolean;
+    isDanger?: boolean;
   }[] = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
     { id: 'courses', label: 'Courses & Quests', icon: BookOpen },
@@ -114,10 +128,23 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     { id: 'billing', label: 'Pro & Billing', icon: Crown },
     { id: 'profile', label: 'My Profile', icon: User },
     {
+      id: 'data-storage',
+      label: 'Data & Activity Log',
+      icon: Database,
+      badge: { text: 'Storage', bg: 'bg-sky-50', color: 'text-sky-700' },
+    },
+    {
       id: 'reset-progress',
       label: 'Reset Progress',
       icon: RotateCcw,
       isAction: true,
+    },
+    {
+      id: 'delete-account',
+      label: 'Delete Account',
+      icon: UserX,
+      isAction: true,
+      isDanger: true,
     },
   ];
 
@@ -285,6 +312,8 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     onClick={() => {
                       if (item.isAction && item.id === 'reset-progress') {
                         handleResetProgressClick();
+                      } else if (item.isAction && item.id === 'delete-account') {
+                        handleDeleteAccountClick();
                       } else {
                         handleNavigate(item.id as MainAppView);
                       }
@@ -294,7 +323,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                       isActive
                         ? 'bg-[#22c55e] text-white shadow-xs'
                         : item.isAction
-                        ? 'text-slate-400 hover:text-rose-600 hover:bg-rose-50'
+                        ? item.isDanger
+                          ? 'text-rose-500 hover:text-rose-700 hover:bg-rose-50'
+                          : 'text-slate-400 hover:text-rose-600 hover:bg-rose-50'
                         : 'text-slate-500 hover:text-slate-900 hover:bg-slate-100'
                     }`}
                   >
@@ -303,7 +334,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                         isActive
                           ? 'text-white stroke-[2.5]'
                           : item.isAction
-                          ? 'text-slate-400 group-hover:text-rose-600'
+                          ? item.isDanger
+                            ? 'text-rose-500 group-hover:text-rose-700'
+                            : 'text-slate-400 group-hover:text-rose-600'
                           : 'text-slate-500 group-hover:text-slate-900'
                       }`}
                     />
@@ -320,6 +353,8 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                 onClick={() => {
                   if (item.isAction && item.id === 'reset-progress') {
                     handleResetProgressClick();
+                  } else if (item.isAction && item.id === 'delete-account') {
+                    handleDeleteAccountClick();
                   } else {
                     handleNavigate(item.id as MainAppView);
                   }
@@ -328,7 +363,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                   isActive
                     ? 'bg-[#22c55e] text-white font-extrabold shadow-xs'
                     : item.isAction
-                    ? 'text-slate-600 hover:text-rose-700 hover:bg-rose-50/70'
+                    ? item.isDanger
+                      ? 'text-rose-600 hover:text-rose-800 hover:bg-rose-50/80 font-bold'
+                      : 'text-slate-600 hover:text-rose-700 hover:bg-rose-50/70'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`}
               >
@@ -338,7 +375,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                       isActive
                         ? 'text-white stroke-[2.5]'
                         : item.isAction
-                        ? 'text-slate-400 group-hover:text-rose-600'
+                        ? item.isDanger
+                          ? 'text-rose-500 group-hover:text-rose-700'
+                          : 'text-slate-400 group-hover:text-rose-600'
                         : 'text-slate-400'
                     }`}
                   />

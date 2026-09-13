@@ -28,6 +28,8 @@ import { OnboardingBuddy } from './components/OnboardingBuddy';
 import { DashboardNavbar } from './components/DashboardNavbar';
 import { DashboardSidebar } from './components/DashboardSidebar';
 import { ResetProgressModal } from './components/ResetProgressModal';
+import { DeleteAccountModal } from './components/DeleteAccountModal';
+import { DataStorageInspectorView } from './components/DataStorageInspectorView';
 import { HomeView } from './components/HomeView';
 import { CoursesView } from './components/CoursesView';
 import { CourseDetailView } from './components/CourseDetailView';
@@ -78,6 +80,7 @@ export function App() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(loadSidebarCollapsed);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState<boolean>(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState<boolean>(false);
 
   const handleToggleSidebar = () => {
     setSidebarCollapsed((prev) => {
@@ -119,6 +122,42 @@ export function App() {
     setPet(freshPet);
     setIsResetModalOpen(false);
     sound.playLevelUp(freshUser.soundEnabled);
+  };
+
+  const handleDeleteAccount = () => {
+    try {
+      // Clear all codepaw and skillpet keys from localStorage
+      const keysToRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && (k.startsWith('codepaw_') || k.startsWith('skillpet_'))) {
+          keysToRemove.push(k);
+        }
+      }
+      keysToRemove.forEach((k) => localStorage.removeItem(k));
+    } catch (e) {
+      console.warn('Failed to purge local storage keys:', e);
+    }
+
+    // Reset user state to clean defaults and sign out
+    setUser({ ...DEFAULT_USER });
+    setPet({ ...DEFAULT_PET_STATE });
+    setIsAuthenticated(false);
+    setIsDeleteAccountModalOpen(false);
+    setCurrentView('landing');
+    sound.playClick(user.soundEnabled);
+  };
+
+  const handleClearSandboxCode = () => {
+    try {
+      ['javascript', 'python', 'html', 'css'].forEach((lang) => {
+        localStorage.removeItem(`codepaw_sandbox_code_${lang}`);
+        localStorage.removeItem(`skillpet_sandbox_code_${lang}`);
+      });
+    } catch (e) {
+      console.warn('Failed to clear sandbox keys:', e);
+    }
+    sound.playSuccess(user.soundEnabled);
   };
 
   // Sync state to local storage
@@ -450,6 +489,10 @@ export function App() {
                 setIsMobileDrawerOpen(false);
                 setIsResetModalOpen(true);
               }}
+              onDeleteAccount={() => {
+                setIsMobileDrawerOpen(false);
+                setIsDeleteAccountModalOpen(true);
+              }}
               user={user}
               pet={pet}
               isCollapsed={false}
@@ -469,6 +512,7 @@ export function App() {
           onSignOut={handleSignOut}
           onToggleSound={handleToggleSound}
           onResetProgress={() => setIsResetModalOpen(true)}
+          onDeleteAccount={() => setIsDeleteAccountModalOpen(true)}
           user={user}
           pet={pet}
           isCollapsed={sidebarCollapsed}
@@ -577,6 +621,19 @@ export function App() {
               user={user}
               onUpdateProfile={handleUpdateProfile}
               onSignOut={handleSignOut}
+              onNavigateToDataStorage={() => setCurrentView('data-storage')}
+              onDeleteAccount={() => setIsDeleteAccountModalOpen(true)}
+            />
+          )}
+
+          {currentView === 'data-storage' && (
+            <DataStorageInspectorView
+              user={user}
+              pet={pet}
+              onNavigateBack={() => setCurrentView('profile')}
+              onTriggerResetModal={() => setIsResetModalOpen(true)}
+              onTriggerDeleteModal={() => setIsDeleteAccountModalOpen(true)}
+              onClearSandboxCode={handleClearSandboxCode}
             />
           )}
         </main>
@@ -651,6 +708,14 @@ export function App() {
         isOpen={isResetModalOpen}
         onClose={() => setIsResetModalOpen(false)}
         onConfirm={handleResetProgress}
+      />
+
+      {/* Delete Account & Wipe Data Modal */}
+      <DeleteAccountModal
+        isOpen={isDeleteAccountModalOpen}
+        onClose={() => setIsDeleteAccountModalOpen(false)}
+        onConfirmDelete={handleDeleteAccount}
+        user={user}
       />
     </div>
   );
