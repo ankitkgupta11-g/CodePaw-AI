@@ -68,6 +68,51 @@ export const AiCourseGeneratorModal: React.FC<AiCourseGeneratorModalProps> = ({
         const data = await response.json();
         if (data && data.course) {
           generatedCourse = data.course;
+        } else if (data && data.success && data.data && data.data.title && Array.isArray(data.data.chapters)) {
+          const raw = data.data;
+          const courseSlug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 30);
+          const courseId = `gen-${courseSlug}-${Date.now().toString(36)}`;
+          generatedCourse = {
+            id: courseId,
+            slug: courseSlug,
+            title: raw.title,
+            description: raw.description || `Interactive ${level} course covering ${topic}.`,
+            level: level,
+            durationMinutes: raw.chapters.reduce(
+              (acc: number, c: { durationMin?: number }) => acc + (c.durationMin || 15),
+              0
+            ) || 75,
+            category: (['python', 'web', 'ai', 'ml', 'datascience'].includes(raw.category)
+              ? raw.category
+              : 'ai') as 'ai' | 'prompt' | 'ml' | 'datascience' | 'python' | 'web',
+            isFreemium: true,
+            accentColor: 'from-emerald-500 to-teal-600',
+            tagColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            iconType: raw.category === 'python' ? 'python' : 'ai',
+            chapters: raw.chapters.map((ch: {
+              chapterNumber?: number;
+              title?: string;
+              description?: string;
+              durationMin?: number;
+              explanation?: string;
+              codeSnippet?: string;
+              question?: string;
+              options?: { id: string; text: string; isCorrect: boolean; explanation: string }[];
+            }, idx: number) => ({
+              id: `${courseId}-ch-${ch.chapterNumber || idx + 1}`,
+              chapterNumber: ch.chapterNumber || idx + 1,
+              title: ch.title || `Chapter ${idx + 1}`,
+              description: ch.description || `Master core principles of ${topic}.`,
+              durationMin: ch.durationMin || 15,
+              isLocked: idx > 0,
+              xpReward: 30,
+              gemReward: 5,
+              explanation: ch.explanation || `Key takeaways for ${ch.title || topic}.`,
+              codeSnippet: ch.codeSnippet,
+              question: ch.question,
+              options: ch.options,
+            })),
+          };
         }
       }
     } catch (err) {

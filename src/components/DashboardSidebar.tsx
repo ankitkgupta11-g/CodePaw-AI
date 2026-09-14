@@ -468,16 +468,31 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                 className="flex items-center gap-2.5 cursor-pointer flex-1 mr-2 min-w-0"
                 onClick={() => handleNavigate('profile')}
               >
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-emerald-400 text-white font-bold text-xs flex items-center justify-center shadow-xs shrink-0">
+                <div
+                  className={`w-8 h-8 rounded-full text-white font-bold text-xs flex items-center justify-center shadow-xs shrink-0 ${
+                    user.role === 'owner'
+                      ? 'bg-gradient-to-tr from-amber-600 to-amber-400'
+                      : 'bg-gradient-to-tr from-indigo-500 to-emerald-400'
+                  }`}
+                >
                   {user.avatarInitials}
                 </div>
                 <div className="min-w-0">
-                  <div className="font-extrabold text-xs text-slate-900 truncate">
-                    {user.name}
+                  <div className="font-extrabold text-xs text-slate-900 truncate flex items-center gap-1">
+                    <span className="truncate">{user.name}</span>
+                    {user.role === 'owner' && (
+                      <Crown className="w-3 h-3 text-amber-500 fill-amber-500 shrink-0" />
+                    )}
                   </div>
                   <div className="flex items-center gap-1 text-[10px] font-mono text-orange-600 font-bold truncate">
-                    <span>🔥</span>
-                    <span>{user.streakDays === 0 ? '7d' : `${user.streakDays}d`} streak</span>
+                    {user.role === 'owner' ? (
+                      <span className="text-amber-700 font-sans font-bold">Owner / Admin</span>
+                    ) : (
+                      <>
+                        <span>🔥</span>
+                        <span>{user.streakDays === 0 ? '7d' : `${user.streakDays}d`} streak</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

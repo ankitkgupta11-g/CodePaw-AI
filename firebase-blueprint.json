@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "UserProfile",
+      "description": "User profile, progression, enrolled courses, and virtual companion state",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["owner", "admin", "student"] },
+        "authProvider": { "type": "string", "enum": ["google", "password"] },
+        "avatarInitials": { "type": "string" },
+        "accountId": { "type": "string" },
+        "lastSignInDate": { "type": "string" },
+        "emailVerified": { "type": "boolean" },
+        "streakDays": { "type": "number" },
+        "gems": { "type": "number" },
+        "hearts": { "type": "number" },
+        "xp": { "type": "number" },
+        "level": { "type": "number" },
+        "completedChapterIds": { "type": "array" },
+        "enrolledCourseIds": { "type": "array" },
+        "earnedBadgeIds": { "type": "array" },
+        "inventory": { "type": "array" },
+        "soundEnabled": { "type": "boolean" },
+        "speechEnabled": { "type": "boolean" },
+        "emailRemindersEnabled": { "type": "boolean" },
+        "showOnLeaderboard": { "type": "boolean" },
+        "subscriptionPlan": { "type": "string", "enum": ["free", "monthly", "yearly"] },
+        "activePetId": { "type": "string" },
+        "petState": { "type": "object" },
+        "weeklyProgress": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "email", "name", "role"]
+    },
+    "systemAudit": {
+      "title": "SystemAudit",
+      "description": "Administrative records and platform metrics accessible only by verified Owners/Admins",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "action": { "type": "string" },
+        "performedBy": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["action", "performedBy", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "Private user profile and companion progression data owned by the authenticated user"
+    },
+    "/system/{auditId}": {
+      "schema": "systemAudit",
+      "description": "Administrative logs accessible exclusively by owner/admin identities"
+    }
+  }
+}

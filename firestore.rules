@@ -1,0 +1,52 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Checks if the request is from an authenticated user
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Validates if the authenticated UID matches the target userId
+    function isUser(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Helper: Identifies verified platform owners by secure email token
+    function isOwner() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'kajugupta1119@gmail.com' ||
+        request.auth.token.email == 'ankitkgupta1123@gmail.com'
+      );
+    }
+
+    // Zero-Trust User Directory: Users can strictly read and write ONLY their own data
+    match /users/{userId} {
+      allow read: if isUser(userId) || isOwner();
+      allow create: if isUser(userId) || isOwner();
+      allow update: if isUser(userId) || isOwner();
+      allow delete: if isUser(userId) || isOwner();
+
+      // Nested user sub-collections (e.g., companion progress, sandbox scripts)
+      match /{subcollection=**} {
+        allow read, write: if isUser(userId) || isOwner();
+      }
+    }
+
+    // Administrative / System configuration: Owner-only access
+    match /system/{auditId} {
+      allow read, write: if isOwner();
+    }
+
+    // Connection test document (for health check ping)
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Catch-all: Deny all unsolicited document access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

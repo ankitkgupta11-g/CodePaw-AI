@@ -34,12 +34,19 @@ export interface PetState {
   accessory?: string;
 }
 
+export type UserRole = 'owner' | 'admin' | 'student';
+
 export interface UserProfile {
   id: string;
   name: string;
   email: string;
+  role: UserRole;
+  avatar?: string;
+  provider?: 'google' | 'password' | 'guest';
+  authProvider?: 'google' | 'password' | 'guest';
   avatarInitials: string;
   accountId: string;
+  joinedDate?: string;
   lastSignInDate: string;
   emailVerified: boolean;
   streakDays: number;

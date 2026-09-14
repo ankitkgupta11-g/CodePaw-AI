@@ -33,11 +33,13 @@ function getWithMigration(newKey: string, legacyKey: string): string | null {
 
 export const DEFAULT_USER: UserProfile = {
   id: 'user_ankit_gupta',
-  name: 'ankit gupta',
+  name: 'Ankit Gupta',
   email: 'kajugupta1119@gmail.com',
+  role: 'owner',
+  authProvider: 'password',
   avatarInitials: 'AG',
   accountId: '8ba64d43-33dd-4620-b020-5eae6eb135c4',
-  lastSignInDate: 'Sep 11, 2026, 12:18 PM',
+  lastSignInDate: 'Sep 13, 2026, 12:18 PM',
   emailVerified: true,
   streakDays: 0,
   gems: 0,

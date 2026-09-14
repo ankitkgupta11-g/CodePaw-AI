@@ -22,6 +22,18 @@ import {
 } from './utils/storage';
 import { COURSES } from './data/courses';
 import { sound } from './utils/audioFx';
+import {
+  onAuthChange,
+  logOutFromFirebase,
+  syncUserDataToFirestore,
+  subscribeToUserDocument,
+  deleteUserAccountFromFirebase,
+  loadSessionFromLocalStorage,
+  saveSessionToLocalStorage,
+  isOwnerEmail,
+  OWNER_DISPLAY_NAME,
+} from './lib/firebase';
+import { UserRole } from './types';
 import { LandingPage } from './components/LandingPage';
 import { AuthView } from './components/AuthView';
 import { OnboardingBuddy } from './components/OnboardingBuddy';
@@ -49,10 +61,27 @@ import { LearningContextPayload, SandboxLanguage } from './types';
 import { Sparkles, MessageSquare } from 'lucide-react';
 
 export function App() {
-  const [user, setUser] = useState<UserProfile>(loadUserProfile);
+  const [user, setUser] = useState<UserProfile>(() => {
+    const cached = loadSessionFromLocalStorage();
+    const base = loadUserProfile();
+    if (cached && cached.id) {
+      return {
+        ...base,
+        ...cached,
+        name: cached.name || base.name,
+        email: cached.email || base.email,
+        role: (cached.role || (isOwnerEmail(cached.email) ? 'owner' : 'student')) as UserRole,
+      };
+    }
+    return base;
+  });
   const [pet, setPet] = useState<PetState>(loadPetState);
   const [courses, setCourses] = useState<Course[]>(COURSES);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(loadAuthStatus);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const cached = loadSessionFromLocalStorage();
+    if (cached && cached.id) return true;
+    return loadAuthStatus();
+  });
   const [currentView, setCurrentView] = useState<MainAppView>('dashboard');
 
   // Modals state
@@ -124,13 +153,21 @@ export function App() {
     sound.playLevelUp(freshUser.soundEnabled);
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     try {
-      // Clear all codepaw and skillpet keys from localStorage
+      if (user.id) {
+        await deleteUserAccountFromFirebase(user.id);
+      }
+    } catch (err) {
+      console.warn('Failed to delete user account in Firebase:', err);
+    }
+
+    try {
+      // Clear all codepaw, user_session, and skillpet keys from localStorage
       const keysToRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
-        if (k && (k.startsWith('codepaw_') || k.startsWith('skillpet_'))) {
+        if (k && (k.startsWith('codepaw_') || k.startsWith('skillpet_') || k === 'user_session')) {
           keysToRemove.push(k);
         }
       }
@@ -160,10 +197,75 @@ export function App() {
     sound.playSuccess(user.soundEnabled);
   };
 
-  // Sync state to local storage
+  // Listen to Firebase Auth state changes
+  useEffect(() => {
+    const unsubscribe = onAuthChange((fbUser) => {
+      if (fbUser) {
+        const isOwner = isOwnerEmail(fbUser.email);
+        const resolvedName = isOwner ? OWNER_DISPLAY_NAME : (fbUser.displayName || 'Learner');
+        const role: UserRole = isOwner ? 'owner' : 'student';
+
+        setUser((prev) => {
+          const nextUser: UserProfile = {
+            ...prev,
+            id: fbUser.uid,
+            email: fbUser.email || prev.email,
+            name: resolvedName,
+            role,
+            avatar: fbUser.photoURL || undefined,
+            avatarInitials: isOwner
+              ? 'AG'
+              : (resolvedName.split(' ').map((p) => p[0]).join('').toUpperCase().slice(0, 2) || 'CP'),
+            provider: (fbUser.providerData[0]?.providerId.includes('google')
+              ? 'google'
+              : 'password') as 'google' | 'password',
+            authProvider: (fbUser.providerData[0]?.providerId.includes('google')
+              ? 'google'
+              : 'password') as 'google' | 'password',
+            emailVerified: fbUser.emailVerified,
+          };
+          saveSessionToLocalStorage(nextUser);
+          return nextUser;
+        });
+        setIsAuthenticated(true);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Real-time Firestore snapshot subscription
+  useEffect(() => {
+    if (user && user.id && isAuthenticated && !user.id.startsWith('guest_')) {
+      const unsubscribeSnapshot = subscribeToUserDocument(user.id, (firestoreData) => {
+        if (firestoreData) {
+          setUser((prev) => ({
+            ...prev,
+            ...firestoreData,
+            name: firestoreData.name || prev.name,
+            email: firestoreData.email || prev.email,
+            role: (firestoreData.role || prev.role) as UserRole,
+          }));
+          if (firestoreData.petState) {
+            setPet((prev) => ({
+              ...prev,
+              ...firestoreData.petState,
+            }));
+          }
+        }
+      });
+
+      return () => unsubscribeSnapshot();
+    }
+  }, [user?.id, isAuthenticated]);
+
+  // Sync state to local storage & Firestore
   useEffect(() => {
     saveUserProfile(user);
-  }, [user]);
+    if (isAuthenticated && user && user.id) {
+      syncUserDataToFirestore(user, pet);
+    }
+  }, [user, pet, isAuthenticated]);
 
   useEffect(() => {
     savePetState(pet);
@@ -174,22 +276,37 @@ export function App() {
   }, [isAuthenticated]);
 
   // Handle Auth success
-  const handleAuthSuccess = (email: string, name: string) => {
-    const initials = name
+  const handleAuthSuccess = (profile: Partial<UserProfile>) => {
+    const resolvedEmail = profile.email || user.email;
+    const isOwner = isOwnerEmail(resolvedEmail);
+    const resolvedName = isOwner ? OWNER_DISPLAY_NAME : (profile.name || user.name || 'Learner');
+    const role: UserRole = isOwner ? 'owner' : (profile.role || 'student');
+
+    const initials = resolvedName
       .split(' ')
       .map((part) => part[0])
       .join('')
       .toUpperCase()
-      .slice(0, 2) || 'AV';
+      .slice(0, 2) || (isOwner ? 'AG' : 'CP');
 
-    setUser((prev) => ({
-      ...prev,
-      email,
-      name,
+    const updatedUser: UserProfile = {
+      ...user,
+      ...profile,
+      id: profile.id || user.id,
+      email: resolvedEmail,
+      name: resolvedName,
+      role,
       avatarInitials: initials,
-    }));
+      authProvider: profile.authProvider || profile.provider || 'password',
+      provider: profile.provider || profile.authProvider || 'password',
+    };
+
+    setUser(updatedUser);
+    saveSessionToLocalStorage(updatedUser);
+    saveUserProfile(updatedUser);
     setIsAuthenticated(true);
     setAuthModalOpen(false);
+
     if (authInitialMode === 'signup') {
       setCurrentView('onboarding-buddy');
     } else {
@@ -198,7 +315,12 @@ export function App() {
   };
 
   // Sign out handler
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    try {
+      await logOutFromFirebase();
+    } catch (e) {
+      console.warn('Logout error:', e);
+    }
     setIsAuthenticated(false);
     setCurrentView('landing');
   };
